@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TechNova Store</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to bottom right, #f0f9ff, #dff6ff);
+      color: #333;
+    }
+
+    header {
+      background: linear-gradient(to right, #2c3e50, #3498db);
+      color: white;
+      padding: 1.5rem 2rem;
+      text-align: center;
+    }
+
+    nav {
+      background-color: #2980b9;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    nav button {
+      background: #f39c12;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    nav button:hover {
+      background: #d35400;
+    }
+
+    .product-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+
+    .product {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product:hover {
+      transform: translateY(-6px);
+    }
+
+    .product img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .product h3 {
+      margin: 1rem 0 0.5rem;
+    }
+
+    .product p {
+      margin-bottom: 1rem;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .product button {
+      padding: 0.5rem;
+      background: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .product button:hover {
+      background: #1e8449;
+    }
+
+    #cart-view {
+      background: white;
+      margin: 2rem;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: none;
+    }
+
+    footer {
+      background: #2c3e50;
+      color: #ddd;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>TechNova <span style="color:#f9ca24">Store</span></h1>
+    <p>Explore the latest and greatest in electronics!</p>
+  </header>
+
+  <nav>
+    <button onclick="goHome()">Home</button>
+    <button onclick="showCart()">View Cart 🛒</button>
+    <button onclick="clearCart()">Clear Cart ❌</button>
+    <button onclick="alert('TechNova brings you the best gadgets at the best prices.')">About Us</button>
+    <button onclick="alert('🔥 Check out our latest tech deals!')">Deals</button>
+  </nav>
+
+  <section class="product-container" id="product-list">
+
+    <!-- OLD PRODUCTS you gave -->
+    <div class="product">
+      <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.smartprix.com%2Fbytes%2Fbest-5g-smartphones-in-india-between-20000-to-300000%2F&psig=AOvVaw3UfNt2IQHaRqGiIzI4uf6m&ust=1750304827030000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCNCtyN2H-o0DFQAAAAAdAAAAABAE" alt="Phone">
+      <h3>Smartphone</h3>
+      <p>Latest 5G smartphone with ultra performance.</p>
+      <button onclick="addToCart('Smartphone')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1585386959984-a415522e3f8e?auto=format&fit=crop&w=600&q=80" alt="Headphones">
+      <h3>Headphones</h3>
+      <p>Noise cancelling wireless headphones.</p>
+      <button onclick="addToCart('Headphones')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1587202372775-bf92f83903d7?auto=format&fit=crop&w=600&q=80" alt="Laptop">
+      <h3>Laptop</h3>
+      <p>Powerful and sleek design, great for productivity.</p>
+      <button onclick="addToCart('Laptop')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1554672408-11e60d48b7b3?auto=format&fit=crop&w=600&q=80" alt="Smartwatch">
+      <h3>Smartwatch</h3>
+      <p>Fitness tracker and stylish companion.</p>
+      <button onclick="addToCart('Smartwatch')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1585128792020-581dc88b93c4?auto=format&fit=crop&w=600&q=80" alt="TV">
+      <h3>Smart TV</h3>
+      <p>Ultra HD 4K smart television with HDR support.</p>
+      <button onclick="addToCart('Smart TV')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=600&q=80" alt="Camera">
+      <h3>DSLR Camera</h3>
+      <p>Capture high-resolution photos with precision.</p>
+      <button onclick="addToCart('DSLR Camera')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?auto=format&fit=crop&w=600&q=80" alt="Tablet">
+      <h3>Tablet</h3>
+      <p>Perfect for reading, browsing and entertainment.</p>
+      <button onclick="addToCart('Tablet')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1611080626919-d226b9c8a0f7?auto=format&fit=crop&w=600&q=80" alt="Gaming Console">
+      <h3>Gaming Console</h3>
+      <p>Next-gen gaming with ultra performance.</p>
+      <button onclick="addToCart('Gaming Console')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1585386959984-ec57c84e1d34?auto=format&fit=crop&w=600&q=80" alt="Bluetooth Speaker">
+      <h3>Bluetooth Speaker</h3>
+      <p>Portable speaker with powerful bass and clarity.</p>
+      <button onclick="addToCart('Bluetooth Speaker')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1612874742005-d2ccaa7e4c58?auto=format&fit=crop&w=600&q=80" alt="Drone">
+      <h3>Drone</h3>
+      <p>Capture stunning aerial shots in 4K resolution.</p>
+      <button onclick="addToCart('Drone')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1580906855280-d98e7ef6f629?auto=format&fit=crop&w=600&q=80" alt="VR Headset">
+      <h3>VR Headset</h3>
+      <p>Step into a virtual world with immersive visuals.</p>
+      <button onclick="addToCart('VR Headset')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1611270629569-59a0ba32fa2e?auto=format&fit=crop&w=600&q=80" alt="Router">
+      <h3>Wi-Fi Router</h3>
+      <p>High-speed dual-band internet for your home.</p>
+      <button onclick="addToCart('Wi-Fi Router')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1615392427560-e4efae77cf15?auto=format&fit=crop&w=600&q=80" alt="Power Bank">
+      <h3>Power Bank</h3>
+      <p>Keep your devices charged on the go.</p>
+      <button onclick="addToCart('Power Bank')">Add to Cart</button>
+    </div>
+
+    <!-- NEW PRODUCTS you requested -->
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80" alt="iPad Air">
+      <h3>iPad Air</h3>
+      <p>Lightweight and powerful tablet with stunning display.</p>
+      <button onclick="addToCart('iPad Air')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1632212629615-f1b7a60f1e7b?auto=format&fit=crop&w=600&q=80" alt="PlayStation 5">
+      <h3>PlayStation 5</h3>
+      <p>Experience next-gen gaming like never before.</p>
+      <button onclick="addToCart('PlayStation 5')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1585386959984-ec57c84e1d34?auto=format&fit=crop&w=600&q=80" alt="Meta Quest 2">
+      <h3>Meta Quest 2</h3>
+      <p>Wireless virtual reality headset for immersive worlds.</p>
+      <button onclick="addToCart('Meta Quest 2')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=600&q=80" alt="Google Pixel 6">
+      <h3>Google Pixel 6</h3>
+      <p>Pure Android experience with amazing camera.</p>
+      <button onclick="addToCart('Google Pixel 6')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80" alt="MacBook Pro">
+      <h3>MacBook Pro</h3>
+      <p>Powerful laptop with Retina display and M1 chip.</p>
+      <button onclick="addToCart('MacBook Pro')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1549924231-f129b911e442?auto=format&fit=crop&w=600&q=80" alt="Apple Watch">
+      <h3>Apple Watch</h3>
+      <p>Advanced fitness tracker and smartwatch.</p>
+      <button onclick="addToCart('Apple Watch')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="Bose QuietComfort">
+      <h3>Bose QuietComfort</h3>
+      <p>Industry-leading noise cancelling headphones.</p>
+      <button onclick="addToCart('Bose QuietComfort')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1523475496153-3a5a2a8f4efb?auto=format&fit=crop&w=600&q=80" alt="Samsung Galaxy Watch">
+      <h3>Samsung Galaxy Watch</h3>
+      <p>Smartwatch with advanced health monitoring.</p>
+      <button onclick="addToCart('Samsung Galaxy Watch')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80" alt="Kindle Paperwhite">
+      <h3>Kindle Paperwhite</h3>
+      <p>Waterproof e-reader with a high-resolution display.</p>
+      <button onclick="addToCart('Kindle Paperwhite')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1512499617640-c2f999c0a677?auto=format&fit=crop&w=600&q=80" alt="GoPro Hero 9">
+      <h3>GoPro Hero 9</h3>
+      <p>Rugged action camera with 5K video capability.</p>
+      <button onclick="addToCart('GoPro Hero 9')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=600&q=80" alt="Nikon Z6">
+      <h3>Nikon Z6</h3>
+      <p>Full-frame mirrorless camera for professionals.</p>
+      <button onclick="addToCart('Nikon Z6')">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=600&q=80" alt="DJI Mavic Air 2">
+      <h3>DJI Mavic Air 2</h3>
+      <p>Compact drone with excellent flight time and camera.</p>
+      <button onclick="addToCart('DJI Mavic Air 2')">Add to Cart</button>
+    </div>
+
+  </section>
+
+  <section id="cart-view">
+    <h2>🛒 Your Cart</h2>
+    <ul id="cart-items"></ul>
+  </section>
+
+  <footer>
+    &copy; 2025 TechNova Store. Designed and developed by Vishal.
+  </footer>
+
+  <script>
+    const cart = [];
+
+    function addToCart(productName) {
+      cart.push(productName);
+      alert(productName + " added to cart!");
+    }
+
+    function showCart() {
+      const cartSection = document.getElementById("cart-view");
+      const productList = document.getElementById("product-list");
+      const cartItems = document.getElementById("cart-items");
+
+      cartItems.innerHTML = "";
+      if (cart.length === 0) {
+        cartItems.innerHTML = "<li>Your cart is empty.</li>";
+      } else {
+        cart.forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = item;
+          cartItems.appendChild(li);
+        });
+      }
+
+      cartSection.style.display = "block";
+      productList.style.display = "none";
+    }
+
+    function goHome() {
+      document.getElementById("cart-view").style.display = "none";
+      document.getElementById("product-list").style.display = "grid";
+    }
+
+    function clearCart() {
+      cart.length = 0;
+      alert("Your cart has been cleared!");
+      showCart();
+    }
+
+    // Hide any product card if image fails to load
+    document.querySelectorAll(".product img").forEach(img => {
+      img.onerror = () => {
+        const product = img.closest(".product");
+        if (product) product.remove();
+      };
+    });
+  </script>
+
+</body>
+</html>
