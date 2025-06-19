@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DelishBite - Food Delivery</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: #fff8f0;
+      color: #333;
+    }
+
+    header {
+      background: #ff5e57;
+      color: white;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    header h1 {
+      font-size: 2rem;
+    }
+
+    nav {
+      display: flex;
+      gap: 1rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .hero {
+      background: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=1350&q=80') no-repeat center/cover;
+      height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .section {
+      padding: 3rem 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .filter-buttons {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .filter-buttons button {
+      margin: 0 0.5rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      background: #2ecc71;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .item {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .item img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .item h4 {
+      margin: 0.8rem 0 0.5rem;
+      font-size: 1.2rem;
+    }
+
+    .item p {
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .item button {
+      margin-top: 0.6rem;
+      padding: 0.5rem;
+      background: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .cart-section {
+      display: none;
+      background: #fff;
+      margin-top: 2rem;
+      border-top: 2px solid #eee;
+      padding-top: 1rem;
+    }
+
+    footer {
+      background: #2d3436;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+
+    .cart-btn {
+      background: #f39c12;
+      color: white;
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: 6px;
+      float: right;
+      cursor: pointer;
+    }
+
+    ul#cart-items {
+      list-style: none;
+      padding-left: 1rem;
+    }
+
+    .clear-btn {
+      background: #d63031;
+      color: white;
+      padding: 0.4rem 0.8rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    .total {
+      margin-top: 1rem;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>DelishBite</h1>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#menu">Menu</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Delicious Food Delivered Fast</h2>
+</section>
+
+<section class="section" id="menu">
+  <h3>Our Menu</h3>
+
+  <div class="filter-buttons">
+    <button onclick="filterItems('all')">All</button>
+    <button onclick="filterItems('veg')">Veg</button>
+    <button onclick="filterItems('nonveg')">Non-Veg</button>
+    <button onclick="filterItems('snack')">Snacks</button>
+    <button onclick="filterItems('beverage')">Beverages</button>
+    <button onclick="filterItems('dessert')">Desserts</button>
+    <button class="cart-btn" onclick="toggleCart()">🛒 Cart (<span id="cart-count">0</span>)</button>
+  </div>
+
+  <div class="menu" id="menu-list"></div>
+
+  <div class="cart-section" id="cart-section">
+    <h4>Your Cart:</h4>
+    <ul id="cart-items"></ul>
+    <p class="total">Total: ₹<span id="total-amount">0</span></p>
+    <button class="clear-btn" onclick="clearCart()">Clear Cart</button>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <h3>Contact Us</h3>
+  <p style="text-align:center;">Email: support@delishbite.com | Phone: +91-9999999999</p>
+</section>
+
+<footer>
+  &copy; 2025 DelishBite. Crafted with ❤️ by Vishal.
+</footer>
+
+<script>
+  const menuData = [
+    { name: 'Paneer Tikka', type: 'veg', price: 180, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJ2WY2YmIJtXrpmDToEHwJIOAcyBefjpFwXg&s' },
+    { name: 'Chicken Biryani', type: 'nonveg', price: 250, img: 'https://www.cubesnjuliennes.com/wp-content/uploads/2020/07/Chicken-Biryani-Recipe.jpg' },
+    { name: 'Veg Pizza', type: 'veg', price: 220, img: 'https://www.archanaskitchen.com/images/archanaskitchen/0-Archanas-Kitchen-Recipes/2018/June-07/No_Yeast_Thin_Crust_Veggie_Pizza_Recipe-1.jpg' },
+    { name: 'Mutton Curry', type: 'nonveg', price: 300, img: 'https://lh5.googleusercontent.com/proxy/fm5qZsQ1nm8HztsfW92BSx3XQKt1tl2miFs7fXnbRmwE5bmIR3ADNRXrG0h6fpcNpkggOK684pAHz0bkpBZTvZLVj8bIwot0-h0aDsU' },
+    { name: 'Salad Bowl', type: 'veg', price: 120, img: 'https://www.howsweeteats.com/wp-content/uploads/2023/09/chickpea-salad-bowl-6.jpg' },
+    { name: 'French Fries', type: 'snack', price: 80, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8ae8p5fO5SDVCFj-xEWTJaECdaCkzSx0jsA&s' },
+    { name: 'Samosa', type: 'snack', price: 30, img: 'https://www.cubesnjuliennes.com/wp-content/uploads/2020/08/Best-Indian-Punjabi-Samosa-Recipe.jpg' },
+    { name: 'Cold Coffee', type: 'beverage', price: 100, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR331FC1GRa844z77pMi05Oy-fLPYNOe5qjIA&s' },
+    { name: 'Mango Juice', type: 'beverage', price: 90, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpr3ECotoditDst5dpwrCAiUwcezVTwpP_jw&s' },
+    { name: 'Paneer Butter Masala', type: 'veg', price: 180, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU2GVSX6yMjCLHtHBaQwyqjUw1rkC1sF9H8g&s' },
+    { name: 'Veg Burger', type: 'veg', price: 100, img: 'https://www.yummyfoodrecipes.com/resources/picture/org/Veg-Burger-Recipe.jpg' },
+    { name: 'Chole Bhature', type: 'veg', price: 120, img: 'https://img-global.cpcdn.com/recipes/87c52cb9ca601252/1200x630cq90/photo.jpg' },
+    { name: 'Masala Dosa', type: 'veg', price: 90, img: 'https://www.indianhealthyrecipes.com/wp-content/uploads/2021/06/masala-dosa-recipe.jpg' },
+    { name: 'Butter Chicken', type: 'nonveg', price: 240, img: 'https://www.indianhealthyrecipes.com/wp-content/uploads/2022/07/chicken-butter-masala-recipe.jpg' },
+    { name: 'Chicken Kebab', type: 'nonveg', price: 180, img: 'https://simshomekitchen.com/wp-content/uploads/2022/04/tandoori-skewers.png' },
+    { name: 'Fish Curry', type: 'nonveg', price: 200, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR5bv5CUtCfSyCjiwS29HyMoq0FfaCTGxX1A&s' },
+    { name: 'Egg Roll', type: 'nonveg', price: 80, img: 'https://static01.nyt.com/images/2024/01/10/multimedia/nd-egg-rolls-jgqc/nd-egg-rolls-jgqc-superJumbo.jpg' },
+    { name: 'Cheese Balls', type: 'snack', price: 90, img: 'https://www.cubesnjuliennes.com/wp-content/uploads/2020/05/Corn-Cheese-Balls.jpg' },
+    { name: 'Nachos & Dip', type: 'snack', price: 120, img: 'https://www.emborg.com/app/uploads/2023/09/1200x900px_Easy-Sour-Cream-Dips.png' },
+    { name: 'Spring Rolls', type: 'snack', price: 110, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTza89XuqcvI6HAxx4cgkRt2Q__7pusfLjiCQ&s' },
+    { name: 'Lemon Soda', type: 'beverage', price: 60, img: 'https://www.seriouseats.com/thmb/Lkr5DnY7jNP2aP5DS3d5qE0PEkQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__2020__08__20200816-nimbu-soda-vicky-wasik-1-28079d5d45ee4e47a37a969d1e4834a0.jpg' },
+    { name: 'Gulab Jamun', type: 'dessert', price: 60, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Milk_Powder_Gulab_Jamun_by_Preeti_Tamilarasan.jpg/640px-Milk_Powder_Gulab_Jamun_by_Preeti_Tamilarasan.jpg' },
+    { name: 'Strawberry Smoothie', type: 'beverage', price: 110, img: 'https://www.thespruceeats.com/thmb/DTkCRqNWiK8HmlAANacYhMLhN9E=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/strawberry-breakfast-smoothie-recipe-2097149-hero-02-5c1d4b2a46e0fb00014bf2ec.jpg' },
+    { name: 'Iced Tea', type: 'beverage', price: 75, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSucV-QhjZlKALmV8wzA0SXkhL8jCN1-S6kHQ&s' },
+    { name: 'Blueberry Mojito', type: 'beverage', price: 95, img: 'https://vanillaandbean.com/wp-content/uploads/2018/08/BBMojito-6.jpg' },
+    { name: 'Chocolate Milkshake', type: 'beverage', price: 120, img: 'https://cookilicious.com/wp-content/uploads/2025/01/Brownie-Milkshake-Recipe-20-scaled.jpg' },
+    { name: 'Orange Juice', type: 'beverage', price: 80, img: 'https://upload.wikimedia.org/wikipedia/commons/0/05/Orangejuice.jpg' },
+    { name: 'Rasmalai', type: 'dessert', price: 90, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRe_iE1P5sbsw7izWdPDzEIn-R8tK-3yRbLA&s' },
+    { name: 'Fruit Custard', type: 'dessert', price: 70, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSqTmswFi3QeHHPSPwF2XVWiyhJiNGYeserQ&s' },
+    { name: 'Brownie with Ice Cream', type: 'dessert', price: 140, img: 'https://www.thereciperebel.com/wp-content/uploads/2022/05/brownie-sundae-TRR-1200-25-of-40.jpg' },
+    { name: 'Pineapple Pastry', type: 'dessert', price: 60, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyFw4kEshclzePUncEI-E4kII2yffUFESFtA&s' },
+    { name: 'Caramel Pudding', type: 'dessert', price: 100, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8tCWQaTHbnYKXAuvUoQ9vgSaMDt-qoNLiDA&s' },
+    { name: 'Chocolate Ice Cream', type: 'dessert', price: 70, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToNb4qLVc8li_M2NHBfEl14DaVpUCmplY5lg&s' }
+  ];
+
+  let cart = [];
+
+  function renderMenu(filter = 'all') {
+    const menuList = document.getElementById('menu-list');
+    menuList.innerHTML = '';
+    const filtered = filter === 'all' ? menuData : menuData.filter(item => item.type === filter);
+    filtered.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'item';
+      div.innerHTML = `
+        <img src="${item.img}" alt="${item.name}" />
+        <h4>${item.name}</h4>
+        <p>${item.type.charAt(0).toUpperCase() + item.type.slice(1)} - ₹${item.price}</p>
+        <button onclick="addToCart('${item.name}')">Add to Cart</button>
+      `;
+      menuList.appendChild(div);
+    });
+  }
+
+  function addToCart(name) {
+    const item = menuData.find(i => i.name === name);
+    if (item) {
+      cart.push(item);
+      updateCart();
+    }
+  }
+
+  function updateCart() {
+    const cartList = document.getElementById('cart-items');
+    const totalDisplay = document.getElementById('total-amount');
+    document.getElementById('cart-count').textContent = cart.length;
+    cartList.innerHTML = '';
+    let total = 0;
+    cart.forEach((item, i) => {
+      const li = document.createElement('li');
+      li.textContent = `${i + 1}. ${item.name} - ₹${item.price}`;
+      cartList.appendChild(li);
+      total += item.price;
+    });
+    totalDisplay.textContent = total;
+  }
+
+  function clearCart() {
+    cart = [];
+    updateCart();
+    toggleCart();
+  }
+
+  function toggleCart() {
+    const cartSec = document.getElementById('cart-section');
+    cartSec.style.display = cartSec.style.display === 'none' || cartSec.style.display === '' ? 'block' : 'none';
+  }
+
+  function filterItems(type) {
+    renderMenu(type);
+  }
+
+  renderMenu();
+</script>
+
+</body>
+</html>
